@@ -1,0 +1,103 @@
+﻿<Window x:Class="QP_Code_Generator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:myDesign="clr-namespace:QP_Code_Generator.Design"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        mc:Ignorable="d ignore"
+        Height="500"
+        Width="500"
+        MinHeight="500"
+        MinWidth="500"
+        Title="{Binding TitleVersion}"
+        WindowStartupLocation="CenterScreen"
+        Icon="terminal.ico"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <myDesign:Bool2VisibleOrCollapsed x:Key="B2V" Collapse="True"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFE0F1FC" Offset="0"/>
+                <GradientStop Color="#FFF7FBFD" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="104*"/>
+            <ColumnDefinition Width="265*"/>
+            <ColumnDefinition Width="123*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="73*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="145*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" 
+               FontWeight="ExtraBold" FontFamily="Verdana" FontSize="22" Padding="15,0,0,0" Foreground="DarkBlue" 
+               Content="{Binding Title}" Height="26" />
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Code Type:" Style="{StaticResource LblRight}" Margin="0,1" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Save To:" Style="{StaticResource LblRight}" Margin="0,1" />
+        <Label Grid.Row="3" Grid.Column="0" Content="Image Type:" Style="{StaticResource LblRight}" Margin="0,1" />
+        <Label Grid.Row="3" Grid.Column="1" Content="Shape:" Style="{StaticResource LblRight}"  />
+        <Label Grid.Row="4" Grid.Column="0" Content="Data:" Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" />
+        <Label Grid.Row="4" Grid.Column="0" Content="Public Data:" Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" Visibility="{Binding GenerateSqrc, Converter={StaticResource B2V}}"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="Private Data:" Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" Visibility="{Binding GenerateSqrc, Converter={StaticResource B2V}}"/>
+
+        <ComboBox Grid.Row="1" Grid.Column="1" Width="100" HorizontalAlignment="Left" Margin="3"
+                  ItemsSource="{Binding ListCodeType}"
+                  SelectedItem="{Binding CodeType}" />
+
+        <TextBox Name="txtSaveTo" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding SaveTo}" Style="{StaticResource TxtStretchRO}" Background="#FFF0F8FC"  />
+
+        <Button Grid.Row="2" Grid.Column="2" Content="Browse" Style="{StaticResource BtnShortStyle}" 
+                        Command="{Binding CmdBrowse}" Margin="3,3,0,3" />
+
+
+        <ComboBox Grid.Row="3" Grid.Column="1" Width="100" HorizontalAlignment="Left" Margin="3,3,0,3" 
+                  ItemsSource="{Binding ListImgType}"
+                  SelectedItem="{Binding ImgType}"/>
+
+        <ComboBox Grid.Row="3" Grid.Column="2" Width="90" HorizontalAlignment="Left" Margin="3,3,0,3" IsEnabled="{Binding IsFrameQR}"
+                  ItemsSource="{Binding ListShapeType}"
+                  SelectedItem="{Binding ShapeType}"/>
+
+
+        <TextBox Name="txtData" Grid.Row="4" Grid.Column="1" Text="{Binding PublicData}" Style="{StaticResource TxtStretch}" IsEnabled="{Binding ElementName=txtSaveTo, Path=Text.Length}"
+                 TextWrapping="Wrap" TextBlock.LineHeight="5"
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Auto" MinLines="1" MaxLines="15" MaxLength="250" />
+
+        <TextBox Name="txtPData" Grid.Row="5" Grid.Column="1" Text="{Binding PrivateData}" Style="{StaticResource TxtStretch}" IsEnabled="{Binding ElementName=txtSaveTo, Path=Text.Length}"
+                 TextWrapping="Wrap" TextBlock.LineHeight="5"  Visibility="{Binding GenerateSqrc, Converter={StaticResource B2V}}"
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="60" MinLines="1" MaxLines="15" MaxLength="250" />
+
+
+        <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" >
+            <Button Content="GENERATE" Style="{StaticResource MyGlowBtn}" Margin="0,0,20,0" Foreground="Purple" Width="80" IsEnabled="{Binding ElementName=txtData,Path=Text.Length}"
+                                Command="{Binding CmdJob}" />
+            <Button Content="CLEAR" Style="{StaticResource MyGlowBtn}" Margin="0,0,20,0" Width="80"
+                                Command="{Binding CmdClear}" />
+            <Button Content="TEST"  Style="{StaticResource MyGlowBtn}" Margin="0,0,20,0" Width="80" Command="{Binding CmdTest}" Visibility="Collapsed" />
+        </StackPanel>
+
+        <Image Grid.Row="8" Grid.ColumnSpan="3" Stretch="Uniform" Margin="3" Source="{Binding OutputImage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom" 
+               Content="Developed by Tin" FontFamily="Calibri Light" FontSize="10" Foreground="#FFBDBDBD" FontWeight="SemiBold" FontStyle="Italic" />
+    </Grid>
+</Window>

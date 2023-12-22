@@ -1,0 +1,39 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="QP_Code_Generator.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SaveTo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FQR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://HostUrl/api/FrameQR</Value>
+    </Setting>
+    <Setting Name="SQRC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://HostUrl/api/sqrc</Value>
+    </Setting>
+    <Setting Name="DSQRC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://HostUrl/api/SQRCdecode</Value>
+    </Setting>
+    <Setting Name="DFQR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://HostUrl/api/FQRdecode</Value>
+    </Setting>
+    <Setting Name="BFQR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://HostUrl/api/SQRCBulk</Value>
+    </Setting>
+    <Setting Name="BSQRC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://HostUrl/api/FrameQRBulk</Value>
+    </Setting>
+    <Setting Name="APIURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://AuthUrl/cert/api/token</Value>
+    </Setting>
+    <Setting Name="APIKEY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ApiKeyHere</Value>
+    </Setting>
+    <Setting Name="HOSTURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HostUrl</Value>
+    </Setting>
+    <Setting Name="SQRCKEY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0123456789ABCDEF</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
