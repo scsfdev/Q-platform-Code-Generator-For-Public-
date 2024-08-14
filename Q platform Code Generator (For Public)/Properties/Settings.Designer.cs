@@ -61,54 +61,6 @@ namespace QP_Code_Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://HostUrl/api/SQRCdecode")]
-        public string DSQRC {
-            get {
-                return ((string)(this["DSQRC"]));
-            }
-            set {
-                this["DSQRC"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://HostUrl/api/FQRdecode")]
-        public string DFQR {
-            get {
-                return ((string)(this["DFQR"]));
-            }
-            set {
-                this["DFQR"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://HostUrl/api/SQRCBulk")]
-        public string BFQR {
-            get {
-                return ((string)(this["BFQR"]));
-            }
-            set {
-                this["BFQR"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://HostUrl/api/FrameQRBulk")]
-        public string BSQRC {
-            get {
-                return ((string)(this["BSQRC"]));
-            }
-            set {
-                this["BSQRC"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://AuthUrl/cert/api/token")]
         public string APIURL {
             get {
@@ -152,6 +104,42 @@ namespace QP_Code_Generator.Properties {
             }
             set {
                 this["SQRCKEY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string CELL_SHAPE {
+            get {
+                return ((string)(this["CELL_SHAPE"]));
+            }
+            set {
+                this["CELL_SHAPE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DL")]
+        public string FP_POSITION {
+            get {
+                return ((string)(this["FP_POSITION"]));
+            }
+            set {
+                this["FP_POSITION"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DEBUG_FLAG {
+            get {
+                return ((bool)(this["DEBUG_FLAG"]));
+            }
+            set {
+                this["DEBUG_FLAG"] = value;
             }
         }
     }

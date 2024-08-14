@@ -58,14 +58,17 @@
         <Label Grid.Row="3" Grid.Column="1" Content="Shape:" Style="{StaticResource LblRight}"  />
         <Label Grid.Row="4" Grid.Column="0" Content="Data:" Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" />
         <Label Grid.Row="4" Grid.Column="0" Content="Public Data:" Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" Visibility="{Binding GenerateSqrc, Converter={StaticResource B2V}}"/>
-        <Label Grid.Row="5" Grid.Column="0" Content="Private Data:" Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" Visibility="{Binding GenerateSqrc, Converter={StaticResource B2V}}"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="Private Data:"  Style="{StaticResource LblRight}" Margin="0,1" VerticalAlignment="Top" Visibility="{Binding GenerateSqrc, Converter={StaticResource B2V}}"/>
 
         <ComboBox Grid.Row="1" Grid.Column="1" Width="100" HorizontalAlignment="Left" Margin="3"
                   ItemsSource="{Binding ListCodeType}"
                   SelectedItem="{Binding CodeType}" />
 
         <Label Grid.Row="1" Grid.Column="1" Content="Ver:" Style="{StaticResource LblRight}"  />
-        <TextBox Name="txtVer" Grid.Row="1" Grid.Column="2" Text="{Binding FqrVer}" Style="{StaticResource TxtStretchRO}" Width="50" HorizontalAlignment="Left"  />
+        <TextBox Name="txtVer" Grid.Row="1" Grid.Column="2" Text="{Binding FqrVer}" Style="{StaticResource TxtStretchRO}" 
+                 Width="50" HorizontalAlignment="Left" IsEnabled="{Binding IsFrameQR}" ToolTip="Input value from 2 to 40.   0 will be auto ver."  />
+        <Label Grid.Row="1" Grid.Column="2" Content="2 ~ 40" HorizontalAlignment="Left" Margin="60,2,2,0" Foreground="Gray" />
+        
         
         <TextBox Name="txtSaveTo" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding SaveTo}" Style="{StaticResource TxtStretchRO}" Background="#FFF0F8FC"  />
 

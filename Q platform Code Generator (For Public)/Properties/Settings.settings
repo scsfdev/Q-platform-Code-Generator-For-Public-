@@ -11,18 +11,6 @@
     <Setting Name="SQRC" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://HostUrl/api/sqrc</Value>
     </Setting>
-    <Setting Name="DSQRC" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://HostUrl/api/SQRCdecode</Value>
-    </Setting>
-    <Setting Name="DFQR" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://HostUrl/api/FQRdecode</Value>
-    </Setting>
-    <Setting Name="BFQR" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://HostUrl/api/SQRCBulk</Value>
-    </Setting>
-    <Setting Name="BSQRC" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://HostUrl/api/FrameQRBulk</Value>
-    </Setting>
     <Setting Name="APIURL" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://AuthUrl/cert/api/token</Value>
     </Setting>
@@ -34,6 +22,15 @@
     </Setting>
     <Setting Name="SQRCKEY" Type="System.String" Scope="User">
       <Value Profile="(Default)">0123456789ABCDEF</Value>
+    </Setting>
+    <Setting Name="CELL_SHAPE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="FP_POSITION" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DL</Value>
+    </Setting>
+    <Setting Name="DEBUG_FLAG" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

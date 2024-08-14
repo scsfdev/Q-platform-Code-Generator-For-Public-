@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using System.Windows.Forms;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace QP_Code_Generator.ViewModel
 {
@@ -155,20 +156,39 @@ namespace QP_Code_Generator.ViewModel
         public ICommand CmdJob { get; private set; }
 
 
+        private void ForwardErrMsg(MyReply reply)
+        {
+            if (!string.IsNullOrEmpty(reply.ErrMsg))
+            {
+                if (Properties.Settings.Default.DEBUG_FLAG)      // If Flag is true, show Exception Error. Log will be logged regardless of this flag. This flag is only for user to see.
+                    Messenger.Default.Send(StaticVar.ERROR + Environment.NewLine + Environment.NewLine + reply.WarnMsg + Environment.NewLine + Environment.NewLine + reply.ErrMsg, Msg.VM);
+                else
+                    Messenger.Default.Send(StaticVar.ERROR + Environment.NewLine + Environment.NewLine + reply.WarnMsg, Msg.VM);
+            }
+            else if (reply.IsOk == false)
+                Messenger.Default.Send(StaticVar.ERROR + Environment.NewLine + Environment.NewLine + reply.WarnMsg, Msg.VM);
+            else if (reply.IsOk == true && !string.IsNullOrEmpty(reply.WarnMsg))
+                Messenger.Default.Send(StaticVar.WARNING + Environment.NewLine + Environment.NewLine + reply.WarnMsg, Msg.VM);
+            else
+                Messenger.Default.Send(reply.Msg, Msg.VM);
+        }
+
+
+
         public MainViewModel()
         {
             System.Reflection.Assembly asm = System.Reflection.Assembly.GetEntryAssembly();
             var version = asm.GetName().Version.Major.ToString() + "." + asm.GetName().Version.Minor.ToString() + "." + asm.GetName().Version.Revision.ToString();
 
-            Title = "Q platform Code Generator";
+            Title = StaticVar.TITLE;
             TitleVersion = Title + "    { Ver: " + version + " }";
 
             CmdBrowse = new RelayCommand(Action_Browse);
             CmdClear = new RelayCommand<object>(Action_Clear);
             CmdJob = new RelayCommand<object>(Action_Job);
 
-            ListCodeType = new List<string>() { "FrameQR", "FrameQR-K", "SQRC" };
-            ListImgType = new List<string>() { "JPG", "PNG", "BMP" };
+            ListCodeType = new List<string>() { "SQRC","FrameQR", "FrameQR-K" };
+            ListImgType = new List<string>() { "JPG", "BMP" };
 
             ListShapeType = new List<string>() { "Rectangle", "Circle", "Pentagon", "Hexagon", "Octagon" };
 
@@ -205,13 +225,15 @@ namespace QP_Code_Generator.ViewModel
                 myR = new QpeHelper(Model.CodeType.SQRC).GenerateSQRC(_PublicData, _PrivateData, _ImgType);
             }
 
-            
-
             if (myR.IsOk)
             {
                 var uri = new Uri(myR.ImgPath);
                 var bitmap = new BitmapImage(uri);
                 OutputImage = bitmap;
+            }
+            else
+            {
+                ForwardErrMsg(myR);
             }
         }
 
@@ -224,7 +246,7 @@ namespace QP_Code_Generator.ViewModel
 
         private void Init_Form()
         {
-            CodeType = "FrameQR";
+            CodeType = "SQRC";
             SaveTo = Properties.Settings.Default.SaveTo;
             ImgType = "JPG";
             ShapeType = "Rectangle";

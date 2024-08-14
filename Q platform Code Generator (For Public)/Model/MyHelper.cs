@@ -8,6 +8,25 @@ using System.Web.Script.Serialization;
 
 namespace QP_Code_Generator.Model
 {
+    internal enum Msg
+    {
+        VM,
+        VIEW,
+        MODEL
+    }
+
+    internal class StaticVar
+    {
+        internal const string ERROR = "[ ERROR ]";
+        internal const string WARNING = "[ WARNING ]";
+        internal const string INFO = "[ INFO ]";
+
+        internal const string TITLE = "Q platform Code Generator Demo";
+
+        internal const string OK = "OK";
+        internal const string CANCEL = "CANCEL";
+    }
+
     public enum CodeType
     {
         FQR,
@@ -37,6 +56,7 @@ namespace QP_Code_Generator.Model
         public bool IsOk { get; set; }
         public string Msg { get; set; }
         public string ErrMsg { get; set; }
+        public string WarnMsg { get; set; }
         public string ImgPath { get; set; }
         public string publicData { get; set; }
         public string privateData { get; set; }
@@ -47,6 +67,7 @@ namespace QP_Code_Generator.Model
             IsOk = false;
             Msg = "";
             ErrMsg = "";
+            WarnMsg = "";
             ImgPath = "";
             publicData = "";
             privateData = "";
@@ -151,7 +172,8 @@ namespace QP_Code_Generator.Model
                 catch (Exception e)
                 {
                     myR.IsOk = false;
-                    myR.Msg = "Exception error: " + e.Message;
+                    myR.WarnMsg = "Q platform authentication failed!" + Environment.NewLine + "Please check your Setting config file for necessary API and URL parameters.";
+                    myR.ErrMsg = "Exception error: " + e.Message;
                 }
 
                 return myR;
@@ -239,7 +261,7 @@ namespace QP_Code_Generator.Model
                                 txt_QRCell_B = "#000000",
                                 dd_alpha_QRW = "255",
                                 dd_alpha_QRB = "255",
-                                txt_kngl_Url = "02",
+                                txt_kngl_Url = "02",   // 00 - QRQR wifi intro, 01 - MapQR, 02 - ARAR, 03 - Toyota, 04 - NEC, 05 - QRQR, 06 - DNWA, 07 - AKiotoyoda X page, 08 - Nitento, 09 = 00
                                 model = "0",
                                 codeCheck = "1"
                             }
@@ -250,6 +272,17 @@ namespace QP_Code_Generator.Model
 
                         var httpResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
                         myFrame.Msg = "Status Code: " + httpResponse.StatusCode;
+
+                        var headerReply = httpResponse.Headers.Keys[2];
+                        string headerMsg = httpResponse.GetResponseHeader(headerReply);
+                        if(headerMsg.ToUpper() != "OK" && httpResponse.ContentLength == 0)
+                        {
+                            myFrame.IsOk = false;
+                            myFrame.WarnMsg = "Generating FrameQR/FramQR-K failed!" + Environment.NewLine +"Try to increase Version or reduce data size.";
+
+                            return myFrame;
+                        }
+
                         using (var binaryReader = new BinaryReader(httpResponse.GetResponseStream()))
                         {
                             myFrame.IsOk = true;
@@ -278,7 +311,8 @@ namespace QP_Code_Generator.Model
                 catch (Exception e)
                 {
                     myFrame.IsOk = false;
-                    myFrame.Msg = "Exception error: " + e.Message;
+                    myFrame.WarnMsg = "Generating FrameQR/FramQR-K failed!";
+                    myFrame.ErrMsg = "Exception error: " + e.Message;
                 }
 
                 return myFrame;
@@ -317,10 +351,10 @@ namespace QP_Code_Generator.Model
                                 sqrcTextMode = "0",
                                 sqrcKey = Properties.Settings.Default.SQRCKEY,
                                 qrModel = "2",
-                                fpPosition = "DL",      // Rotation of the Marker Square.
+                                fpPosition = Properties.Settings.Default.FP_POSITION,      // Rotation of the Marker Square.
                                 qrversion = "0",
                                 EccLevel = "1",
-                                cellshape = "0",        // 0 = dotted pattern, 1 = Normal pattern.
+                                cellshape = Properties.Settings.Default.CELL_SHAPE,        // 0 = dotted pattern, 1 = Normal pattern.
                                 cellsize = "25",
                                 margin = "4",
                                 CellAdjust = "0",      
@@ -355,8 +389,7 @@ namespace QP_Code_Generator.Model
                         string fileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + fileExt;
                         string filePath = Path.Combine(Properties.Settings.Default.SaveTo, fileName);
 
-                        Image img = SaveSqrc(myR.dataArray);
-                        img.Save(filePath);
+                        SaveSqrcImage(myR.dataArray, filePath);
                         myR.ImgPath = filePath;
                         myR.Msg = fileName;
                     }
@@ -364,30 +397,14 @@ namespace QP_Code_Generator.Model
                 catch (Exception e)
                 {
                     myR.IsOk = false;
-                    myR.Msg = "Exception error: " + e.Message;
+                    myR.WarnMsg = "Generating SQRC failed!";
+                    myR.ErrMsg = "Exception error: " + e.Message;
                 }
 
                 return myR;
             }
-
-
-
-            private byte[] ImageToByteArray(Image imageIn)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    imageIn.Save(ms, imageIn.RawFormat);
-                    return ms.ToArray();
-                }
-            }
-
-            private Image SaveSqrc(byte[] byteIn)
-            {
-                MemoryStream ms = new MemoryStream(byteIn);
-                Image returnImage = Image.FromStream(ms);
-                return returnImage;
-            }
-
+            
+           
             private void SaveSqrcImage(byte[] byteIn, string filePath)
             {
                 using (MemoryStream ms = new MemoryStream(byteIn, 0, byteIn.Length))
