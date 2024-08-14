@@ -13,6 +13,8 @@ namespace QP_Code_Generator.ViewModel
     
     public class MainViewModel : ViewModelBase
     {
+        #region Binding
+
         private string _Title;
         public string Title
         {
@@ -48,7 +50,8 @@ namespace QP_Code_Generator.ViewModel
         public string CodeType
         {
             get { return _CodeType; }
-            set {
+            set
+            {
                 Set(ref _CodeType, value);
 
                 if (value.ToUpper().Contains("SQRC"))
@@ -79,7 +82,14 @@ namespace QP_Code_Generator.ViewModel
             get { return _shapeType; }
             set { Set(ref _shapeType, value); }
         }
-        
+
+
+        private string _fqrVer;
+        public string FqrVer
+        {
+            get { return _fqrVer; }
+            set { Set(ref _fqrVer, value); }
+        }
 
 
         private string _SaveTo;
@@ -97,6 +107,7 @@ namespace QP_Code_Generator.ViewModel
             set { Set(ref _PublicData, value); }
         }
 
+
         private string _PrivateData;
         public string PrivateData
         {
@@ -104,12 +115,6 @@ namespace QP_Code_Generator.ViewModel
             set { Set(ref _PrivateData, value); }
         }
 
-
-        public ICommand CmdBrowse { get; private set; }
-        public ICommand CmdClear { get; private set; }
-        public ICommand CmdClose { get; private set; }
-        public ICommand CmdJob { get; private set; }
-        public ICommand CmdTest { get; private set; }
 
 
         private List<string> _ListCodeType;
@@ -134,8 +139,6 @@ namespace QP_Code_Generator.ViewModel
             set { Set(ref _ListShapeType, value); }
         }
 
-        
-
 
         private BitmapImage _OutputImage;
         public BitmapImage OutputImage
@@ -143,6 +146,13 @@ namespace QP_Code_Generator.ViewModel
             get { return _OutputImage; }
             set { Set(ref _OutputImage, value); }
         }
+
+        #endregion
+
+
+        public ICommand CmdBrowse { get; private set; }
+        public ICommand CmdClear { get; private set; }
+        public ICommand CmdJob { get; private set; }
 
 
         public MainViewModel()
@@ -155,9 +165,7 @@ namespace QP_Code_Generator.ViewModel
 
             CmdBrowse = new RelayCommand(Action_Browse);
             CmdClear = new RelayCommand<object>(Action_Clear);
-            CmdClose = new RelayCommand<object>(Action_Close);
             CmdJob = new RelayCommand<object>(Action_Job);
-            CmdTest = new RelayCommand<object>(Action_Test);
 
             ListCodeType = new List<string>() { "FrameQR", "FrameQR-K", "SQRC" };
             ListImgType = new List<string>() { "JPG", "PNG", "BMP" };
@@ -167,10 +175,6 @@ namespace QP_Code_Generator.ViewModel
             Init_Form();
         }
 
-        private void Action_Test(object obj)
-        {
-            // For Testing.
-        }
 
         private void Action_Job(object obj)
         {
@@ -178,7 +182,7 @@ namespace QP_Code_Generator.ViewModel
 
             if (_CodeType.ToUpper() == "FRAMEQR-K")
             {
-                myR = new QpeHelper(Model.CodeType.FQRK).GenerateFrameQR(true, _PublicData, "10", _ImgType);
+                myR = new QpeHelper(Model.CodeType.FQRK).GenerateFrameQR(true, _PublicData, "10", _ImgType, _fqrVer);
             }
             else if (_CodeType.ToUpper() == "FRAMEQR")
             {
@@ -194,7 +198,7 @@ namespace QP_Code_Generator.ViewModel
                     case "OCTAGON": shapeNo = "5"; break;
                     default: shapeNo = "0"; break;
                 }
-                myR = new QpeHelper(Model.CodeType.FQR).GenerateFrameQR(false, _PublicData, "10", _ImgType, shapeNo);
+                myR = new QpeHelper(Model.CodeType.FQR).GenerateFrameQR(false, _PublicData, "10", _ImgType, _fqrVer, shapeNo);
             }
             else if (_CodeType.ToUpper() == "SQRC")
             {
@@ -211,10 +215,7 @@ namespace QP_Code_Generator.ViewModel
             }
         }
 
-        private void Action_Close(object obj)
-        {
-          //  throw new NotImplementedException();
-        }
+        
 
         private void Action_Clear(object obj)
         {
@@ -230,6 +231,7 @@ namespace QP_Code_Generator.ViewModel
             PublicData = "";
             PrivateData = "";
             OutputImage = null;
+            FqrVer = "10";
         }
 
         private void Action_Browse()

@@ -82,13 +82,13 @@ namespace QP_Code_Generator.Model
         }
         
         // Shape --> 0 - Rectangle, 2 - Circle, 3 - Pentagon, 4 - Hexagon, 5 - Octagon
-        public MyReply GenerateFrameQR(bool? fQr, string data, string cellSize, string fileType, string shapeNo = "0")
+        public MyReply GenerateFrameQR(bool? fQr, string data, string cellSize, string fileType, string fqrVer, string shapeNo = "0")
         {
             bool kangaroo = false;
             if (fQr == true)
                 kangaroo = true;
 
-            MyReply myFQR = qServer.GenerateFrameQr(kangaroo, data, cellSize, fileType, shapeNo);
+            MyReply myFQR = qServer.GenerateFrameQr(kangaroo, data, cellSize, fileType, fqrVer, shapeNo);
 
             return myFQR;
         }
@@ -114,10 +114,6 @@ namespace QP_Code_Generator.Model
                     case CodeType.FQR:
                     case CodeType.FQRK: serverUrl = Properties.Settings.Default.FQR; break;
                     case CodeType.SQRC: serverUrl = Properties.Settings.Default.SQRC; break;
-                    case CodeType.DEFQR: serverUrl = Properties.Settings.Default.DFQR; break;
-                    case CodeType.DESQRC: serverUrl = Properties.Settings.Default.DSQRC; break;
-                    case CodeType.FQRBULK: serverUrl = Properties.Settings.Default.BFQR; break;
-                    case CodeType.SQRCBULK: serverUrl = Properties.Settings.Default.BSQRC; break;
                 }
 
                 generateHost = Properties.Settings.Default.HOSTURL;
@@ -172,7 +168,7 @@ namespace QP_Code_Generator.Model
             /// <param name="fileType"></param>
             /// <param name="shapeNo"></param>
             /// <returns></returns>
-            public MyReply GenerateFrameQr(bool fQr, string data, string cellSize, string fileType, string shapeNo)
+            public MyReply GenerateFrameQr(bool fQr, string data, string cellSize, string fileType, string fqrVer, string shapeNo)
             {
                 MyReply myFrame = new MyReply();
 
@@ -198,7 +194,7 @@ namespace QP_Code_Generator.Model
                             {
                                 optd = "FrameQR",
                                 txt_Input = data,
-                                dd_ver = "0",      // 15 or 10.
+                                dd_ver = fqrVer,      // 0 = Auto, 10 or 15,etc for large data.
                                 dd_EccLvl = "1",
                                 dd_canvas_mode = "0",
                                 dd_CellSize = cellSize,

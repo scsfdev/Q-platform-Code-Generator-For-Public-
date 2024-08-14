@@ -64,6 +64,9 @@
                   ItemsSource="{Binding ListCodeType}"
                   SelectedItem="{Binding CodeType}" />
 
+        <Label Grid.Row="1" Grid.Column="1" Content="Ver:" Style="{StaticResource LblRight}"  />
+        <TextBox Name="txtVer" Grid.Row="1" Grid.Column="2" Text="{Binding FqrVer}" Style="{StaticResource TxtStretchRO}" Width="50" HorizontalAlignment="Left"  />
+        
         <TextBox Name="txtSaveTo" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding SaveTo}" Style="{StaticResource TxtStretchRO}" Background="#FFF0F8FC"  />
 
         <Button Grid.Row="2" Grid.Column="2" Content="Browse" Style="{StaticResource BtnShortStyle}" 
