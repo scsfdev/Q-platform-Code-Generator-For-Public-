@@ -74,10 +74,7 @@ namespace QP_Code_Generator.Model
         }
     }
     
-
     
-
-   
 
     public class QpeHelper
     {
@@ -115,7 +112,7 @@ namespace QP_Code_Generator.Model
         }
 
         
-
+        
 
         private sealed class QPlatform2Point0
         {
@@ -367,6 +364,18 @@ namespace QP_Code_Generator.Model
 
                         var httpResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
                         myR.Msg = "Status Code: " + httpResponse.StatusCode;
+
+                        var headerReply = httpResponse.Headers.Keys[2];
+                        string headerMsg = httpResponse.GetResponseHeader(headerReply);
+                        if (headerMsg.ToUpper() != "OK" && httpResponse.ContentLength == 0)
+                        {
+                            myR.IsOk = false;
+                            myR.WarnMsg = "Generating SQRC failed!";
+
+                            return myR;
+                        }
+
+
                         using (var binaryReader = new BinaryReader(httpResponse.GetResponseStream()))
                         {
                             myR.IsOk = true;
